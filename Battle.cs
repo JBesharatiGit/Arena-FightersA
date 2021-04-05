@@ -8,21 +8,20 @@ namespace Arena_FighterA
 {
     public class Battle
     {
-        public  int usualPosition = 0;
+        #region Fields
+        public int usualPosition = 0;
         public bool endFlag = false;
         public bool endTotalFlag = false;
 
         //private static int  pDice=0,oDice=0;
         public  List<Character> characterList = new List<Character>();
         public  List<Character> characterList1 = new List<Character>();
-        public List<Fighters> lstOnePass = new List<Fighters>();
-        public List<List<Fighters>> games = new List<List<Fighters>>();
-        public List<Fighters> gamesTotal = new List<Fighters>();
-
-        //static OnePass onePass = new OnePass();
-        //public static List<OnePass> onePass = new List<OnePass>();
-
-        public  void GetOpponent()
+        public List<Round> lstOnePass = new List<Round>();
+        public List<List<Round>> games = new List<List<Round>>();
+        public List<Round> gamesTotal = new List<Round>();
+        #endregion
+ 
+        public void GetOpponent()
         {
 
             foreach (var item in characterList)
@@ -46,10 +45,10 @@ namespace Arena_FighterA
         }
         public  void writePost(int newOpponent)
         {
-            Fighters onePass;
+            Round onePass;
             if (newOpponent == 0)
             {
-                onePass = new Fighters(characterList1[0].Strength,
+                onePass = new Round(characterList1[0].Strength,
                                             characterList1[0].Health,
                                             characterList[0].Strength,
                                             characterList[0].Health
@@ -60,30 +59,30 @@ namespace Arena_FighterA
                 onePass.pStrength = characterList[0].Strength;
                 onePass.pHealth = characterList[0].Health;
                 onePass.pBeginHealth = characterList[0].BeginHealth;
-                onePass.pTotalHealth += Fighters.PTH;
-                onePass.pTotalStrenth += Fighters.PTS;
+                onePass.pTotalHealth += Round.PTH;
+                onePass.pTotalStrenth += Round.PTS;
 
                 onePass.oName = characterList1[0].Name;
                 onePass.oDice = characterList1[0].CharacterDice;
                 onePass.oStrength = characterList1[0].Strength;
                 onePass.oHealth = characterList1[0].Health;
                 onePass.oBeginHealth = characterList1[0].BeginHealth;
-                onePass.oTotalHealth += Fighters.OTH;
-                onePass.oTotalStrenth += Fighters.OTS;
+                onePass.oTotalHealth += Round.OTH;
+                onePass.oTotalStrenth += Round.OTS;
 
                 lstOnePass.Add(onePass);
 
             }
             else if (newOpponent == 1)
-                onePass = new Fighters();
+                onePass = new Round();
         }
         public void WriteGame()
         {
-            List<Fighters> lstPass = new List<Fighters>();
+            List<Round> lstPass = new List<Round>();
             lstPass = lstOnePass;
             games.Add(lstPass);
 
-            //Fighters f = new Fighters();
+            //Round f = new Round();
             //f = lstOnePass.Last();
             gamesTotal.Add(lstOnePass.Last());
             
@@ -153,7 +152,7 @@ namespace Arena_FighterA
 
             PrintField(characterList[0].Lastposition, characterList1[0].Lastposition);
 
-            lstOnePass = new List<Fighters>();
+            lstOnePass = new List<Round>();
         }
         public void PrintField(int starPosPlyer,int starPosOpponent)
         {
@@ -171,20 +170,25 @@ namespace Arena_FighterA
             {
                 Console.WriteLine();
             }
-
-            Console.WriteLine("      player                 Opponen ");
-            Console.WriteLine("      [{0,-12}]         [{1,-12}]", characterList[0].Name, characterList1[0].Name);
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine("[Dice Strength Health] [Dice Strength Health]");
-            Console.WriteLine("---------------------------------------------");
+            Console.WriteLine("|---------------------------------------------|");
+            Console.WriteLine("|     player                 Opponen          |");
+            Console.WriteLine("      {0,-12}           {1,-12} ", characterList[0].Name, characterList1[0].Name);
+            Console.WriteLine("|---------------------------------------------|");
+            Console.WriteLine("[Dice Strength Health] [Dice Strength Health] |");
+            Console.WriteLine("|---------------------------------------------|");
             Console.WriteLine("{0,7}{1,9}{2,14}{3,9}", characterList[0].Strength, characterList[0].Health, characterList1[0].Strength, characterList1[0].Health);
-            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("|---------------------------------------------|");
             usualPosition = Console.CursorTop;
 
             Console.SetCursorPosition(starPosPlyer, 2);
             Console.WriteLine("#");
             Console.SetCursorPosition(starPosOpponent, 3);
             Console.WriteLine("?");
+
+            Console.SetCursorPosition(52, 2);
+            Console.WriteLine("<--PLAYER");
+            Console.SetCursorPosition(52, 3);
+            Console.WriteLine("<--OPPONENT");
 
             Console.SetCursorPosition(10, 2);
             Console.WriteLine("-");
@@ -202,9 +206,13 @@ namespace Arena_FighterA
             Console.SetCursorPosition(50, 2);
             Console.WriteLine(";");
             Console.SetCursorPosition(50, 3);
-            Console.WriteLine(":");
+            Console.WriteLine(";");
+            Console.SetCursorPosition(0, 1);
+            Console.WriteLine("+-------------------------------------------------+");
+            Console.SetCursorPosition(0, 4);
+            Console.WriteLine("+-------------------------------------------------+");
             Console.WriteLine();
-            //Console.WriteLine("-------------------------------------------------");
+           //Console.Write("-------------------------------------------------");
             Console.WriteLine();
             Console.SetCursorPosition(0, usualPosition);
         }
@@ -217,7 +225,7 @@ namespace Arena_FighterA
             }
 
             Console.WriteLine("      player                 Opponen ");
-            Console.WriteLine("      [{0,-12}]         [{1,-12}]", characterList[0].Name, characterList1[0].Name);
+            Console.WriteLine("      {0,-12}           {1,-12} ", characterList[0].Name, characterList1[0].Name);
             Console.WriteLine("---------------------------------------------");
             Console.WriteLine("[Dice Strength Health] [Dice Strength Health]");
             Console.WriteLine("---------------------------------------------");
@@ -257,7 +265,7 @@ namespace Arena_FighterA
         }
         public void PrintPostBypost() 
         {
-            Fighters f = lstOnePass.Last();
+            Round f = lstOnePass.Last();
             Console.SetCursorPosition(0, usualPosition);
             Console.WriteLine("{0,2}{1,4}{2,10}{3,8}{4,6}{5,9}"/*,item.pName*/, f.pDice, f.pStrength, f.pHealth, f.oDice, f.oStrength, f.oHealth);
             usualPosition = Console.CursorTop;
@@ -277,7 +285,7 @@ namespace Arena_FighterA
                     Console.WriteLine("roll Dice");
 
                     Console.ReadKey();
-                    Round.mydelay(50);
+                    Character.mydelay(50);
                     Console.SetCursorPosition(0, 6);
                     //usualPosition = Console.CursorTop;
                     Console.WriteLine("Play     ");
@@ -290,7 +298,7 @@ namespace Arena_FighterA
                     //usualPosition = Console.CursorTop;
                     Console.Write(message);
                     //Console.ReadKey();
-                    Round.mydelay(50);
+                    Character.mydelay(50);
                     Console.ResetColor();
                     break;
                 default:

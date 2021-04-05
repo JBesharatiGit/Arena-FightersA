@@ -26,13 +26,12 @@ namespace Arena_FighterA
         public void CreateCharacter(string name)
         {
             Name = name;
-            Strength = Round.RollDice(1,7);
-            //if (count < 7)
-            //{
-                _lastPosition = Strength;
+            //Strength = Round.RollDice(1,7);
+            Strength = Round.RollDice(1, 7);
+            _lastPosition = Strength;
                 count++;
-            //}
-            Health = Round.RollDice(1,4);
+            //Health = Round.RollDice(1,4);
+            Health = Round.RollDice(1, 4);
             BeginHealth = Health;
         }
         public void characterSpel()
@@ -40,8 +39,8 @@ namespace Arena_FighterA
             release();
             CharacterDice = Round.RollDice(1,7);
             
-            Round.MoveAhead(Line, MoveIcon, CharacterDice, ref _lastPosition);
-            Round.Changestrength(Line, MoveIcon, ref _strength, ref _lastPosition);
+            MoveAhead(Line, MoveIcon, CharacterDice, ref _lastPosition);
+            Changestrength(Line, MoveIcon, ref _strength, ref _lastPosition);
 
         }
         public void release()
@@ -49,6 +48,87 @@ namespace Arena_FighterA
             CharacterDice = 0;
             Strength = 0;
             Health = 0;
+        }
+
+        public static void MoveAhead(int line, char icon, int distance, ref int lastPosition)
+        {
+            int i = lastPosition;
+            while (i < lastPosition + distance)
+            {
+                if (i > 0)
+                {
+                    Console.SetCursorPosition(i - 1, line);
+                    Console.WriteLine(" ");
+                }
+
+                mydelay(25);
+                Console.SetCursorPosition(i, line);
+                Console.WriteLine(icon);
+                mydelay(25);
+                i++;
+            }
+            lastPosition = i;
+
+
+        }
+        public static void MoveBack(int line, char icon, int distance, ref int lastPosition)
+        {
+            int i = lastPosition;
+            while (i > lastPosition + distance)
+            {
+                i--;
+                if (i > 0)
+                {
+                    Console.SetCursorPosition(i + 1, line);
+                    Console.WriteLine(" ");
+                }
+
+                mydelay(25);
+                Console.SetCursorPosition(i, line);
+                Console.WriteLine(icon);
+                mydelay(25);
+                //i++;
+            }
+            lastPosition = i;
+
+
+        }
+        public static void Changestrength(int line, char icon, ref int Strength, ref int lastPosition)
+        {
+            switch (lastPosition)
+            {
+                case 11:
+                    mydelay(200);
+                    Strength = -2;
+                    MoveBack(line, icon, -2, ref lastPosition);
+                    Console.SetCursorPosition(11, line);
+                    Console.WriteLine("!");
+                    break;
+                case 16:
+                    mydelay(200);
+                    Strength = 4;
+                    MoveAhead(line, icon, 4, ref lastPosition);
+                    Console.SetCursorPosition(16, line);
+                    Console.WriteLine("!");
+                    break;
+                case 26:
+                    mydelay(200);
+                    Strength = 2;
+                    MoveAhead(line, icon, 2, ref lastPosition);
+                    Console.SetCursorPosition(26, line);
+                    Console.WriteLine("!");
+                    break;
+                case 50:
+                    break;
+                default:
+                    break;
+            }
+            //PersonLog.Add((Dice + ',' + Strength).ToString());
+        }
+        public static void mydelay(double seconds)
+        {
+            DateTime d = DateTime.Now.AddMilliseconds(seconds);
+            do { } while (DateTime.Now < d);
         }
     }
 }

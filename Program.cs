@@ -23,7 +23,7 @@ namespace Arena_FighterA
 
                 battle.writePost(0);
 
-                Round.mydelay(2000);
+                Character.mydelay(2000);
                 battle.Message("", 1);
                 battle.endFlag = false;
 
@@ -53,9 +53,9 @@ namespace Arena_FighterA
                         }
                         else
                         {
-                            battle.Message("", 1);
                             battle.writePost(0);
                             battle.PrintPostBypost();
+                            battle.Message("", 1);
                         }
                     }
                 }
@@ -63,7 +63,6 @@ namespace Arena_FighterA
                 RetirOrContinueNext();
             }
         }
-
         public static  void RetirOrContinueNext()
         {
             if (battle.endTotalFlag == false)
@@ -80,7 +79,7 @@ namespace Arena_FighterA
                 if (char.ToLower(k.KeyChar) == 'y' && battle.characterList.Count > 1)
                 {
                     
-                    battle.lstOnePass = new List<Fighters>();
+                    battle.lstOnePass = new List<Round>();
                     ResetPlayerCharacter();
                     battle.writePost(1);
                 }
@@ -111,13 +110,13 @@ namespace Arena_FighterA
         {
             Character Plyer = new Character();
             Console.Write("Enter Player Neme : ");
-            Plyer.CreateCharacter(Console.ReadLine());
+            Plyer.CreateCharacter('['+Console.ReadLine()+']');
             Plyer.Rull = "Player";
             Plyer.Line = 2;
             Plyer.MoveIcon = '#';
             battle.characterList.Add(Plyer);
 
-            string[] opponentNames = new string[] { "Rabit", "Dragon", "Jagvar", "Cheeta" };
+            string[] opponentNames = new string[] { "[Rabit]", "[Dragon]", "[Jagvar]", "[Cheeta]" };
             Plyer = new Character();
             for (int q = 0; q < opponentNames.Length; q++)
             {
